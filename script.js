@@ -4,16 +4,13 @@ const feedback = document.getElementById('feedback');
 
 classButtons.forEach(button => {
   button.addEventListener('click', () => {
-    // Remover classe "selected" de todos
     classButtons.forEach(btn => btn.classList.remove('selected'));
-    // Adicionar ao clicado
     button.classList.add('selected');
-    // Salvar valor ocultamente
     selectedClassInput.value = button.dataset.class;
   });
 });
 
-document.getElementById('registerForm').addEventListener('submit', function (e) {
+document.getElementById('registerForm').addEventListener('submit', async function (e) {
   e.preventDefault();
 
   const username = document.getElementById('username').value.trim();
@@ -26,11 +23,39 @@ document.getElementById('registerForm').addEventListener('submit', function (e) 
     return;
   }
 
-  // Aqui você pode enviar para o backend ou Firebase
-  console.log('Usuário:', username);
-  console.log('Email:', email);
-  console.log('Senha:', password);
-  console.log('Classe:', selectedClass);
+  feedback.textContent = '🔄 Verificando...';
 
-  feedback.textContent = `✅ Conta criada com sucesso como ${selectedClass}! Bem-vindo, ${username}!`;
+  try {
+    // Verifica se o nome de usuário já existe
+    const snapshot = await db.collection('users')
+      .where('username', '==', username)
+      .get();
+
+    if (!snapshot.empty) {
+      feedback.textContent = '❌ Nome de usuário já em uso!';
+      return;
+    }
+
+    // Cria conta no Firebase Auth
+    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+    const userId = userCredential.user.uid;
+
+    // Salva no Firestore
+    await db.collection('users').doc(userId).set({
+      username,
+      email,
+      class: selectedClass,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    feedback.textContent = `✅ Conta criada com sucesso como ${selectedClass}! Bem-vindo, ${username}!`;
+  } catch (error) {
+    if (error.code === 'auth/email-already-in-use') {
+      feedback.textContent = '❌ Este e-mail já está em uso.';
+    } else if (error.code === 'auth/weak-password') {
+      feedback.textContent = '❌ Senha muito fraca. Use 6 caracteres ou mais.';
+    } else {
+      feedback.textContent = `❌ Erro: ${error.message}`;
+    }
+  }
 });
