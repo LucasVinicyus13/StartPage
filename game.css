@@ -1,0 +1,92 @@
+/* HUD do jogador */
+.info_bar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    width: 200px;
+    height: 80px;
+    background-color: white;
+    border-radius: 0 15px 15px 15px;
+    border: 2px solid black;
+    padding: 0.4rem;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.info_user {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+}
+
+.bar {
+    width: 100%;
+    height: 15px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 6px;
+    text-align: center;
+}
+
+.vida {
+    background-color: rgb(255, 38, 38);
+}
+
+.energia {
+    background-color: rgb(48, 189, 189);
+    margin-bottom: -1px;
+}
+
+.estamina {
+    height: 30px;
+    margin-top: 1px;
+    margin-bottom: 4px;
+    padding-bottom: 2px;
+    background-color: rgb(1, 177, 30);
+    border-radius: 5px;
+}
+
+/* Chat */
+.chat-container {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 200px;
+    height: 30px;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.chat-container:hover {
+    height: 450px;
+}
+
+.chat-box {
+    background-color: rgba(128, 128, 128, 0.7);
+    height: calc(100% - 30px);
+    width: 100%;
+    overflow-y: auto;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.chat-box span.name {
+    color: blue;
+    font-weight: bold;
+}
+
+.chat-box span.message {
+    color: white;
+}
+
+#chatInput {
+    width: 100%;
+    height: 30px;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 0.9rem;
+}
