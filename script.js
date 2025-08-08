@@ -41,12 +41,15 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     const userId = userCredential.user.uid;
 
     // Salva no Firestore
-    await db.collection('users').doc(userId).set({
-      username,
-      email,
-      class: selectedClass,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
+await db.collection('users').doc(userId).set({
+  username,
+  email,
+  class: selectedClass,
+  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+});
+
+// Redireciona para a tela do jogo com o nome de usuário na URL
+window.location.href = `game.html?username=${encodeURIComponent(username)}`;
 
     feedback.textContent = `✅ Conta criada com sucesso como ${selectedClass}! Bem-vindo, ${username}!`;
   } catch (error) {
