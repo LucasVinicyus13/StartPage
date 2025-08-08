@@ -10,8 +10,26 @@ document.getElementById("btnLogin").addEventListener("click", function() {
 
     auth.signInWithEmailAndPassword(email, senha)
         .then(userCredential => {
-            // Login bem-sucedido
-            window.location.href = "https://start-page-steel.vercel.app/game.html?";
+            const user = userCredential.user;
+
+            // Buscar nome do jogador no Firestore
+            db.collection("jogadores").doc(user.uid).get()
+                .then(doc => {
+                    if (doc.exists) {
+                        const nomeJogador = doc.data().nome;
+                        localStorage.setItem("nomeJogador", nomeJogador);
+                    } else {
+                        localStorage.setItem("nomeJogador", "Jogador");
+                    }
+
+                    // Redirecionar para o jogo
+                    window.location.href = "https://start-page-steel.vercel.app/game.html";
+                })
+                .catch(error => {
+                    console.error("Erro ao buscar nome:", error);
+                    localStorage.setItem("nomeJogador", "Jogador");
+                    window.location.href = "https://start-page-steel.vercel.app/game.html";
+                });
         })
         .catch(error => {
             mensagemErro.textContent = "E-mail ou senha incorretos";
