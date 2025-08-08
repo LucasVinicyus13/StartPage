@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>RPG Pixelado - Jogo</title>
-  <link rel="stylesheet" href="game.css">
+
+  <!-- Import da fonte Press Start 2P -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="game.css" />
 </head>
 <body>
 
   <!-- Hub do jogador -->
   <div class="flex card_ui info_bar">
     <div class="info_user">
-      <span class="nome" id="playerName"></span>
+      <span class="nome" id="playerName">Jogador</span>
       <span class="level">Lvl. 1</span>
     </div>
     <div class="bar vida"><span>100/100</span></div>
@@ -20,9 +24,9 @@
   </div>
 
   <!-- Chat -->
-  <div class="chat-container">
-    <div class="chat-box" id="chatBox"></div>
-    <input type="text" id="chatInput" placeholder="Digite sua mensagem">
+  <div class="chat-container" id="chatContainer" aria-label="Chat">
+    <div class="chat-box" id="chatBox" role="log" aria-live="polite"></div>
+    <input id="chatInput" type="text" placeholder="Digite sua mensagem" aria-label="Digite sua mensagem" />
   </div>
 
   <script src="game.js"></script>
