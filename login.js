@@ -11,7 +11,7 @@ document.getElementById("btnLogin").addEventListener("click", function() {
     auth.signInWithEmailAndPassword(email, senha)
         .then(userCredential => {
             // Login bem-sucedido
-            window.location.href = "jogo.html";
+            window.location.href = "https://start-page-steel.vercel.app/game.html?";
         })
         .catch(error => {
             mensagemErro.textContent = "E-mail ou senha incorretos";
