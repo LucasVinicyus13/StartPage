@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RPG Pixelado - Jogo</title>
+  <link rel="stylesheet" href="game.css">
+</head>
+<body>
+
+  <!-- Hub do jogador -->
+  <div class="flex card_ui info_bar">
+    <div class="info_user">
+      <span class="nome" id="playerName"></span>
+      <span class="level">Lvl. 1</span>
+    </div>
+    <div class="bar vida"><span>100/100</span></div>
+    <div class="bar energia"><span>100/100</span></div>
+    <div class="estamina"><span></span></div>
+  </div>
+
+  <!-- Chat -->
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox"></div>
+    <input type="text" id="chatInput" placeholder="Digite sua mensagem">
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
