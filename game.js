@@ -1,7 +1,9 @@
-// Pega o nome do jogador da URL (ou localStorage se preferir)
-const params = new URLSearchParams(window.location.search);
-const playerName = params.get('username') || localStorage.getItem('username') || 'Jogador';
-document.getElementById('playerName').textContent = playerName;
+// Pega o nome do jogador do localStorage
+// const params = new URLSearchParams(window.location.search); // Linha removida
+// const playerName = params.get('username') || localStorage.getItem('username') || 'Jogador'; // Linha alterada
+
+const nome = localStorage.getItem("nomeJogador") || "Jogador"; // Nova linha, de acordo com a imagem
+document.getElementById("nome-jogador").textContent = nome; // Alteração na ID, de acordo com a imagem
 
 // Chat
 const chatBox = document.getElementById('chatBox');
@@ -10,7 +12,7 @@ const chatInput = document.getElementById('chatInput');
 chatInput.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && chatInput.value.trim() !== '') {
         const msg = chatInput.value.trim();
-        addMessage(playerName, msg);
+        addMessage(nome, msg); // Use a nova variável 'nome'
         chatInput.value = '';
     }
 });
