@@ -9,7 +9,7 @@ const firebaseConfig = {
   measurementId: "G-G197MN430S"
 };
 
-// Inicializa o Firebase (modo compatível com v8)
+// Inicializa o Firebase (SDK v8 compatível)
 firebase.initializeApp(firebaseConfig);
 
 // Serviços
