@@ -1,153 +1,87 @@
-/* Fonte já importada no HTML - aplicar no body */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 body {
+  font-family: 'Press Start 2P', cursive;
+  background-color: #222;
   margin: 0;
   padding: 0;
-  background: #222;
-  color: #fff;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 12px; /* ajuste legível para a fonte pixel */
-  height: 100vh;
-  overflow: hidden;
+  color: white;
 }
 
-/* HUB - Info Bar */
 .info_bar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; 
-    width: 200px;
-    height: 80px;
-    background-color: white;
-    border-radius: 0 15px 15px 15px;
-    border: 2px solid black;
-    padding: 0.4rem;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    z-index: 1000;
-    color: black;
-    box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 200px;
+  height: 80px;
+  background-color: white;
+  border-radius: 0 15px 15px 15px;
+  border: 2px solid black;
+  padding: 0.4rem;
 }
 
 .info_user {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  color: black;
 }
 
 .bar {
-    width: 100%;
-    height: 15px;
-    border: 1px solid black;
-    border-radius: 5px;
-    margin-bottom: 6px;
-    text-align: center;
-    font-size: 0.7rem;
-    line-height: 15px;
-} 
+  width: 100%;
+  height: 15px;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-bottom: 6px;
+  text-align: center;
+}
 
 .vida {
-    background-color: rgb(255, 38, 38);
+  background-color: rgb(255, 38, 38);
 }
 
 .energia {
-    background-color: rgb(48, 189, 189);
-    margin-bottom: -1px;
+  background-color: rgb(48, 189, 189);
+  margin-bottom: -1px;
 }
 
 .estamina {
-    height: 30px;
-    margin-top: 1px;
-    margin-bottom: 4px;
-    padding-bottom: 2px;
-    background-color: rgb(1, 177, 30);
-    border-radius: 5px;
+  height: 30px;
+  margin-top: 1px;
+  margin-bottom: 4px;
+  padding-bottom: 2px;
+  background-color: rgb(1, 177, 30);
+  border-radius: 5px;
 }
 
-/* CHAT - container retraível */
 .chat-container {
-    position: absolute;
-    bottom: 12px;
-    left: 12px;
-    width: 200px;
-    height: 40px;                /* altura do 'handle' visível quando retraído */
-    overflow: hidden;
-    transition: height 0.28s ease, box-shadow 0.2s ease;
-    z-index: 2000;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    border: 2px solid rgba(0,0,0,0.6);
-    /* fundo visível mesmo retraído */
-    background: linear-gradient(180deg, rgba(80,80,80,0.85), rgba(60,60,60,0.75));
-    box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 200px;
+  height: 450px;
+  background: rgba(128, 128, 128, 0.8);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(350px);
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
 }
 
-/* Expande ao passar o mouse */
 .chat-container:hover {
-    height: 450px;
+  transform: translateY(0);
 }
 
-/* Área das mensagens (fica acima do input) */
-.chat-box {
-    height: calc(100% - 40px); /* reserva espaço para o input */
-    width: 100%;
-    overflow-y: auto;
-    padding: 8px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    /* fundo um pouco mais claro/visível */
-    background: rgba(128,128,128,0.32);
-    backdrop-filter: blur(2px);
+.chat-messages {
+  flex: 1;
+  padding: 5px;
+  overflow-y: auto;
 }
 
-/* mensagens */
-.chat-box .message {
-    display: block;
-    word-wrap: break-word;
-    line-height: 1.1;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-    font-size: 11px;
-}
-
-.chat-box .message .name {
-    color: #3ea6ff; /* azul para o nome */
-    margin-right: 6px;
-    font-weight: 700;
-}
-
-.chat-box .message .text {
-    color: #fff;
-}
-
-/* Input (sempre visível, como handle) */
-#chatInput {
-    width: 100%;
-    height: 40px;
-    border: none;
-    outline: none;
-    padding: 6px 8px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 11px;
-    box-sizing: border-box;
-    background: rgba(0,0,0,0.6);
-    color: #fff;
-    border-top: 1px solid rgba(255,255,255,0.06);
-}
-
-/* Placeholder visível */
-#chatInput::placeholder {
-    color: rgba(255,255,255,0.55);
-}
-
-/* estilo do scroll (opcional, melhora visibilidade) */
-.chat-box::-webkit-scrollbar {
-    width: 8px;
-}
-.chat-box::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.6);
-    border-radius: 6px;
+.chat-input {
+  border: none;
+  padding: 5px;
+  font-size: 10px;
+  outline: none;
 }
