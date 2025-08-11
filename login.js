@@ -1,18 +1,17 @@
-document.getElementById("btnLogin").addEventListener("click", function() {
-    const email = document.getElementById("email").value.trim();
-    const senha = document.getElementById("senha").value.trim();
-    const mensagemErro = document.getElementById("mensagemErro");
+// Inicialização Firebase
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-    if (!email || !senha) {
-        mensagemErro.textContent = "Preencha todos os campos!";
-        return;
-    }
+document.getElementById("btnLogin").addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+    const mensagemErro = document.getElementById("mensagemErro");
 
     auth.signInWithEmailAndPassword(email, senha)
         .then(userCredential => {
             const user = userCredential.user;
 
-            // Buscar nome do jogador no Firestore
+            // Busca o nome do jogador no Firestore
             db.collection("jogadores").doc(user.uid).get()
                 .then(doc => {
                     if (doc.exists) {
@@ -22,7 +21,6 @@ document.getElementById("btnLogin").addEventListener("click", function() {
                         localStorage.setItem("nomeJogador", "Jogador");
                     }
 
-                    // Redirecionar para o jogo
                     window.location.href = "https://start-page-steel.vercel.app/game.html";
                 })
                 .catch(error => {
@@ -31,7 +29,7 @@ document.getElementById("btnLogin").addEventListener("click", function() {
                     window.location.href = "https://start-page-steel.vercel.app/game.html";
                 });
         })
-        .catch(error => {
+        .catch(() => {
             mensagemErro.textContent = "E-mail ou senha incorretos";
         });
 });
