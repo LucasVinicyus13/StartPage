@@ -1,68 +1,45 @@
-// Inicializa Firebase (caso ainda não tenha sido feito)
-const auth = firebase.auth();
-const db = firebase.firestore();
+// Verifica autenticação e nome de usuário
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlName = urlParams.get("username");
 
-// Verifica autenticação e carrega dados do jogador
-auth.onAuthStateChanged(async (user) => {
-    if (!user) {
-        window.location.href = "register.html";
-        return;
-    }
-
-    try {
-        const userDoc = await db.collection("users").doc(user.uid).get();
-        if (!userDoc.exists) {
-            window.location.href = "register.html";
-            return;
-        }
-
-        const data = userDoc.data();
-        document.querySelector(".info_user .nome").textContent = data.username || "Jogador";
-
-    } catch (error) {
-        console.error("Erro ao carregar dados do jogador:", error);
+        firebase.firestore().collection("users").doc(user.uid).get().then(doc => {
+            if (doc.exists) {
+                const storedName = doc.data().username;
+                if (storedName !== urlName) {
+                    window.location.href = "register.html";
+                    return;
+                }
+                document.querySelector(".nome").textContent = storedName;
+                initChat(storedName);
+            } else {
+                window.location.href = "register.html";
+            }
+        });
+    } else {
         window.location.href = "register.html";
     }
 });
 
-// CHAT RETRÁTIL
-const chatContainer = document.querySelector(".chat-container");
-const chatMessages = document.querySelector(".chat-messages");
-const chatInput = document.querySelector("#chat-input");
+function initChat(playerName) {
+    const chatBox = document.querySelector(".chat-box");
+    const chatInput = document.getElementById("chatInput");
 
-chatContainer.addEventListener("mouseenter", () => {
-    chatContainer.classList.add("open");
-});
-chatContainer.addEventListener("mouseleave", () => {
-    chatContainer.classList.remove("open");
-});
-
-chatInput.addEventListener("keydown", async (event) => {
-    if (event.key === "Enter" && chatInput.value.trim() !== "") {
-        let user = auth.currentUser;
-        if (!user) return;
-
-        try {
-            const userDoc = await db.collection("users").doc(user.uid).get();
-            const username = userDoc.exists ? userDoc.data().username : "Jogador";
-
+    chatInput.addEventListener("keypress", function(e) {
+        if (e.key === "Enter" && chatInput.value.trim() !== "") {
             const msg = document.createElement("div");
-            msg.innerHTML = `<span class="chat-name">${username}:</span> <span class="chat-text">${chatInput.value}</span>`;
-            chatMessages.appendChild(msg);
+            msg.innerHTML = `<span style="color:blue">${playerName}:</span> <span style="color:white">${chatInput.value}</span>`;
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            // Remove mensagem após 8s
             setTimeout(() => {
                 msg.style.transition = "opacity 0.5s";
                 msg.style.opacity = "0";
                 setTimeout(() => msg.remove(), 500);
             }, 8000);
 
-        } catch (err) {
-            console.error("Erro ao enviar mensagem:", err);
+            chatInput.value = "";
         }
-
-        chatInput.value = "";
-    }
-});
+    });
+}
