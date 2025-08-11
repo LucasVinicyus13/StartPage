@@ -51,3 +51,12 @@ button:hover {
   font-size: 0.9em;
   color: #ff5555;
 }
+
+.RegisterLink {
+  text-align: center;
+  color: #fff;
+}
+
+.RegisterLink > a {
+  color: #fff;
+}
