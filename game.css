@@ -70,7 +70,7 @@ body {
     height: 20px;
     overflow: hidden;
     transition: height 0.3s ease;
-    background: rgba(100, 100, 100, 0.6);
+    background: rgba(100, 100, 100, 0.35);
     border-top-right-radius: 10px;
 }
 
