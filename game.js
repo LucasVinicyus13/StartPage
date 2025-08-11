@@ -1,47 +1,37 @@
-// Pega o nome do jogador do localStorage
-// const params = new URLSearchParams(window.location.search); // Linha removida
-// const playerName = params.get('username') || localStorage.getItem('username') || 'Jogador'; // Linha alterada
+// Pega o nome da URL
+const params = new URLSearchParams(window.location.search);
+const username = params.get("username") || "Jogador";
 
-const nome = localStorage.getItem("nomeJogador") || "Jogador"; // Nova linha, de acordo com a imagem
-document.getElementById("nome-jogador").textContent = nome; // Alteração na ID, de acordo com a imagem
+// Coloca o nome no HUD
+document.querySelector(".nome").textContent = username;
 
-// Chat
-const chatBox = document.getElementById('chatBox');
-const chatInput = document.getElementById('chatInput');
+const chatMessages = document.querySelector(".chat-messages");
+const chatInput = document.querySelector(".chat-input");
 
-chatInput.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' && chatInput.value.trim() !== '') {
-        const msg = chatInput.value.trim();
-        addMessage(nome, msg); // Use a nova variável 'nome'
-        chatInput.value = '';
-    }
-});
+chatInput.addEventListener("keypress", function (e) {
+  if (e.key === "Enter" && chatInput.value.trim() !== "") {
+    const msg = document.createElement("div");
 
-function addMessage(name, message) {
-    const msgElement = document.createElement('div');
-    msgElement.className = 'message';
-    // usar spans com classes para estilizar nome (azul) e texto (branco)
-    msgElement.innerHTML = `<span class="name">${escapeHtml(name)}:</span> <span class="text">${escapeHtml(message)}</span>`;
-    chatBox.appendChild(msgElement);
+    const nameSpan = document.createElement("span");
+    nameSpan.style.color = "blue";
+    nameSpan.textContent = `${username}: `;
 
-    // Auto scroll para baixo
-    chatBox.scrollTop = chatBox.scrollHeight;
+    const msgSpan = document.createElement("span");
+    msgSpan.style.color = "white";
+    msgSpan.textContent = chatInput.value;
 
-    // Remover após 8 segundos com fade de 0.5s
+    msg.appendChild(nameSpan);
+    msg.appendChild(msgSpan);
+    chatMessages.appendChild(msg);
+
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
     setTimeout(() => {
-        msgElement.style.opacity = '0';
-        setTimeout(() => {
-            if (msgElement.parentNode) msgElement.remove();
-        }, 500);
+      msg.style.transition = "opacity 0.5s";
+      msg.style.opacity = "0";
+      setTimeout(() => msg.remove(), 500);
     }, 8000);
-}
 
-// pequena função para evitar injeção de HTML
-function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
-}
+    chatInput.value = "";
+  }
+});
