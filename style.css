@@ -95,3 +95,7 @@ input[type="password"] {
   color: yellow;
   text-align: center;
 }
+
+.LoginLink {
+  text-align: center;
+}
