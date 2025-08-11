@@ -85,22 +85,20 @@ body {
     font-size: 0.7rem;
 }
 
-/* Estilo para a caixa de input do chat */
 #chatInput {
-    background-color: #000;
-    border: 2px solid #8B4513; /* Borda cor de madeira */
-    color: #00FF00; /* Cor do texto "verde de terminal" */
-    font-family: 'Press Start 2P', cursive; /* Fonte do estilo retrô */
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px #555;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
     padding: 10px;
     font-size: 12px;
-    width: calc(100% - 24px); /* Ajusta a largura com o padding e a borda */
-    box-sizing: border-box; /* Garante que padding e borda não aumentem a largura total */
+    width: 100%;
+    box-sizing: border-box;
     outline: none;
     text-shadow: 1px 1px 2px #000;
 }
 
-/* Efeito de foco para o input */
 #chatInput:focus {
-    border-color: #FFD700; /* Borda dourada ao focar */
-    box-shadow: 0 0 5px #FFD700;
+    box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px #00aaff;
 }
