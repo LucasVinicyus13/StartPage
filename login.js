@@ -1,35 +1,26 @@
-// Inicialização Firebase
-const auth = firebase.auth();
-const db = firebase.firestore();
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-document.getElementById("btnLogin").addEventListener("click", () => {
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-    const mensagemErro = document.getElementById("mensagemErro");
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const feedback = document.getElementById("feedback");
 
-    auth.signInWithEmailAndPassword(email, senha)
-        .then(userCredential => {
-            const user = userCredential.user;
+  try {
+    // Login no Firebase
+    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+    const userId = userCredential.user.uid;
 
-            // Busca o nome do jogador no Firestore
-            db.collection("jogadores").doc(user.uid).get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const nomeJogador = doc.data().nome;
-                        localStorage.setItem("nomeJogador", nomeJogador);
-                    } else {
-                        localStorage.setItem("nomeJogador", "Jogador");
-                    }
+    // Buscar nome do jogador no Firestore
+    const userDoc = await db.collection("users").doc(userId).get();
 
-                    window.location.href = "https://start-page-steel.vercel.app/game.html";
-                })
-                .catch(error => {
-                    console.error("Erro ao buscar nome:", error);
-                    localStorage.setItem("nomeJogador", "Jogador");
-                    window.location.href = "https://start-page-steel.vercel.app/game.html";
-                });
-        })
-        .catch(() => {
-            mensagemErro.textContent = "E-mail ou senha incorretos";
-        });
+    if (userDoc.exists) {
+      const username = userDoc.data().username;
+      // Redireciona com nome na URL
+      window.location.href = `game.html?username=${encodeURIComponent(username)}`;
+    } else {
+      feedback.textContent = "Usuário não encontrado no banco de dados.";
+    }
+  } catch (error) {
+    feedback.textContent = "E-mail ou senha incorretos.";
+  }
 });
