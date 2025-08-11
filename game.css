@@ -83,6 +83,15 @@ body {
     height: 400px;
     overflow-y: auto;
     font-size: 0.7rem;
+
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.chat-box div {
+    max-width: 100%;
+    word-wrap: break-word;
+    margin-bottom: 5px;
 }
 
 #chatInput {
