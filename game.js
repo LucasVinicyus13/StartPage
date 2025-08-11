@@ -8,17 +8,17 @@ firebase.auth().onAuthStateChanged(user => {
             if (doc.exists) {
                 const storedName = doc.data().username;
                 if (storedName !== urlName) {
-                    window.location.href = "register.html";
+                    window.location.href = "index.html";
                     return;
                 }
                 document.querySelector(".nome").textContent = storedName;
                 initChat(storedName);
             } else {
-                window.location.href = "register.html";
+                window.location.href = "index.html";
             }
         });
     } else {
-        window.location.href = "register.html";
+        window.location.href = "index.html";
     }
 });
 
