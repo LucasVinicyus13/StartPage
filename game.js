@@ -1,37 +1,68 @@
-// Pega o nome da URL
-const params = new URLSearchParams(window.location.search);
-const username = params.get("username") || "Jogador";
+// Inicializa Firebase (caso ainda não tenha sido feito)
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-// Coloca o nome no HUD
-document.querySelector(".nome").textContent = username;
+// Verifica autenticação e carrega dados do jogador
+auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+        window.location.href = "register.html";
+        return;
+    }
 
+    try {
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        if (!userDoc.exists) {
+            window.location.href = "register.html";
+            return;
+        }
+
+        const data = userDoc.data();
+        document.querySelector(".info_user .nome").textContent = data.username || "Jogador";
+
+    } catch (error) {
+        console.error("Erro ao carregar dados do jogador:", error);
+        window.location.href = "register.html";
+    }
+});
+
+// CHAT RETRÁTIL
+const chatContainer = document.querySelector(".chat-container");
 const chatMessages = document.querySelector(".chat-messages");
-const chatInput = document.querySelector(".chat-input");
+const chatInput = document.querySelector("#chat-input");
 
-chatInput.addEventListener("keypress", function (e) {
-  if (e.key === "Enter" && chatInput.value.trim() !== "") {
-    const msg = document.createElement("div");
+chatContainer.addEventListener("mouseenter", () => {
+    chatContainer.classList.add("open");
+});
+chatContainer.addEventListener("mouseleave", () => {
+    chatContainer.classList.remove("open");
+});
 
-    const nameSpan = document.createElement("span");
-    nameSpan.style.color = "blue";
-    nameSpan.textContent = `${username}: `;
+chatInput.addEventListener("keydown", async (event) => {
+    if (event.key === "Enter" && chatInput.value.trim() !== "") {
+        let user = auth.currentUser;
+        if (!user) return;
 
-    const msgSpan = document.createElement("span");
-    msgSpan.style.color = "white";
-    msgSpan.textContent = chatInput.value;
+        try {
+            const userDoc = await db.collection("users").doc(user.uid).get();
+            const username = userDoc.exists ? userDoc.data().username : "Jogador";
 
-    msg.appendChild(nameSpan);
-    msg.appendChild(msgSpan);
-    chatMessages.appendChild(msg);
+            const msg = document.createElement("div");
+            msg.innerHTML = `<span class="chat-name">${username}:</span> <span class="chat-text">${chatInput.value}</span>`;
+            chatMessages.appendChild(msg);
 
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    setTimeout(() => {
-      msg.style.transition = "opacity 0.5s";
-      msg.style.opacity = "0";
-      setTimeout(() => msg.remove(), 500);
-    }, 8000);
+            // Remove mensagem após 8s
+            setTimeout(() => {
+                msg.style.transition = "opacity 0.5s";
+                msg.style.opacity = "0";
+                setTimeout(() => msg.remove(), 500);
+            }, 8000);
 
-    chatInput.value = "";
-  }
+        } catch (err) {
+            console.error("Erro ao enviar mensagem:", err);
+        }
+
+        chatInput.value = "";
+    }
 });
